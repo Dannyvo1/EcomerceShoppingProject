@@ -34,6 +34,9 @@
     <Compile Include="Final_WatchShoppingWeb\models.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Final_WatchShoppingWeb\products\forms.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Final_WatchShoppingWeb\products\models.py">
       <SubType>Code</SubType>
     </Compile>
@@ -63,6 +66,7 @@
     <Content Include="Final_WatchShoppingWeb\templates\admin\login.html" />
     <Content Include="Final_WatchShoppingWeb\templates\admin\register.html" />
     <Content Include="Final_WatchShoppingWeb\templates\products\addbrand.html" />
+    <Content Include="Final_WatchShoppingWeb\templates\products\addproduct.html" />
     <Content Include="Final_WatchShoppingWeb\templates\_formhelpers.html" />
     <Content Include="Final_WatchShoppingWeb\templates\_messages.html" />
     <Content Include="requirements.txt" />
