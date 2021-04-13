@@ -34,18 +34,26 @@
     <Compile Include="Final_WatchShoppingWeb\models.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Final_WatchShoppingWeb\products\models.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Final_WatchShoppingWeb\products\routes.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="runserver.py" />
     <Compile Include="Final_WatchShoppingWeb\__init__.py" />
     <Compile Include="Final_WatchShoppingWeb\views.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Final_WatchShoppingWeb\" />
+    <Folder Include="Final_WatchShoppingWeb\products\" />
     <Folder Include="Final_WatchShoppingWeb\static\" />
     <Folder Include="Final_WatchShoppingWeb\static\content\" />
     <Folder Include="Final_WatchShoppingWeb\static\fonts\" />
     <Folder Include="Final_WatchShoppingWeb\static\scripts\" />
     <Folder Include="Final_WatchShoppingWeb\templates\" />
     <Folder Include="Final_WatchShoppingWeb\templates\admin\" />
+    <Folder Include="Final_WatchShoppingWeb\templates\products\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Final_WatchShoppingWeb\static\content\bootstrap.min.css" />
@@ -54,6 +62,7 @@
     <Content Include="Final_WatchShoppingWeb\templates\admin\index.html" />
     <Content Include="Final_WatchShoppingWeb\templates\admin\login.html" />
     <Content Include="Final_WatchShoppingWeb\templates\admin\register.html" />
+    <Content Include="Final_WatchShoppingWeb\templates\products\addbrand.html" />
     <Content Include="Final_WatchShoppingWeb\templates\_formhelpers.html" />
     <Content Include="Final_WatchShoppingWeb\templates\_messages.html" />
     <Content Include="requirements.txt" />
