@@ -53,6 +53,7 @@
     <Folder Include="Final_WatchShoppingWeb\static\" />
     <Folder Include="Final_WatchShoppingWeb\static\content\" />
     <Folder Include="Final_WatchShoppingWeb\static\fonts\" />
+    <Folder Include="Final_WatchShoppingWeb\static\images\" />
     <Folder Include="Final_WatchShoppingWeb\static\scripts\" />
     <Folder Include="Final_WatchShoppingWeb\templates\" />
     <Folder Include="Final_WatchShoppingWeb\templates\admin\" />
