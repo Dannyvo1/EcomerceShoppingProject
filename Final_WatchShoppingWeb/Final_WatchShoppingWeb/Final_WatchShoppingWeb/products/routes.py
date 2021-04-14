@@ -33,6 +33,24 @@ def addbrand():
         return redirect(url_for('addbrand'))
     return render_template('products/addbrand.html', brand='brand')
 
+@app.route('/updatebrand/<int:id>', methods=['GET', 'POST'])
+@isloggedin
+def updatebrand(id):
+    name = request.form.get('brand')
+    cur=conn.cursor()
+    cur.execute("SELECT * FROM brands WHERE id = {0}".format(id))
+    updatebrand = cur.fetchall()
+    if request.method == 'POST' and len(updatebrand)>0:
+        cur.execute("UPDATE brands SET name = '{0}' WHERE id={1}".format(name, id))
+        flash(f'Your brand has been updated', 'success')
+        conn.commit()
+        return redirect(url_for('brands'))
+    else:
+        flash(f'Your brand not exist!' 'danger')
+    cur.close()
+    return render_template('products/updatebrand.html', title="Update brand Page", updatebrand=updatebrand)
+
+
 @app.route('/addcate', methods=['GET', 'POST'])
 @isloggedin
 def addcate():
@@ -83,4 +101,5 @@ def addproduct():
         ##
         flash(f'The product {name} has been add to your database', 'success')
         return redirect(url_for('admin'))
+    cur.close()
     return render_template('products/addproduct.html', title="Add Product page", form=form, brands=brands, categories=categories)

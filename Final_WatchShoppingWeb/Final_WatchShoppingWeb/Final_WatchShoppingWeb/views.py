@@ -116,6 +116,7 @@ def login():
                 return redirect(request.args.get('next') or url_for('admin'))
             else:
                 flash('Wrong Passwrord please try again', 'danger')
+        cur.close()
         ##
     return render_template('admin/login.html', form=form, tile='Login Page')
 
@@ -137,6 +138,7 @@ def admin():
     cur = conn.cursor()
     cur.execute("SELECT p.name, p.price, p.discount, b.name, p.image_1 FROM addproduct as p, brands as b WHERE b.id=p.brand_id")
     products = cur.fetchall()
+    cur.close()
     ##
     return render_template('admin/index.html', title='Admin Page', products=products)
 
@@ -146,6 +148,7 @@ def brands():
     cur = conn.cursor()
     cur.execute("SELECT * FROM brands ORDER BY id DESC;")
     allbrands = cur.fetchall()
+    cur.close()
     return render_template('admin/brand.html', title="Brand Page", allbrands=allbrands)
 
 @app.route('/category', methods=['GET', 'POST'])
@@ -154,6 +157,7 @@ def category():
     cur = conn.cursor()
     cur.execute("SELECT * FROM category ORDER BY id DESC;")
     allcategory = cur.fetchall()
+    cur.close()
     return render_template('admin/brand.html', title="Category Page", allcategory=allcategory)
 #### end zone
 
