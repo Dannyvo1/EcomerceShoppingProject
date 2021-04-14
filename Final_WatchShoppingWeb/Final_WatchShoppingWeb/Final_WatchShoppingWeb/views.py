@@ -133,7 +133,12 @@ def logout():
 @app.route('/admin')
 @isloggedin
 def admin():
-    return render_template('admin/index.html', title='Admin Page')
+    ##SQL call 'addproduct' table
+    cur = conn.cursor()
+    cur.execute("SELECT p.name, p.price, p.discount, b.name, p.image_1 FROM addproduct as p, brands as b WHERE b.id=p.brand_id")
+    products = cur.fetchall()
+    ##
+    return render_template('admin/index.html', title='Admin Page', products=products)
 
 
 

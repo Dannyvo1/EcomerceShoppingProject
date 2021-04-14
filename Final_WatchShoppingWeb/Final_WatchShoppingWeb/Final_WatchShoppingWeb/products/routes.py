@@ -1,10 +1,23 @@
+import secrets
+
 from flask import render_template, request, flash, redirect, url_for, session
 from Final_WatchShoppingWeb import db, app, conn, photos
 from .models import Brand, Category
 from .forms import Addproducts
-import secrets
+from functools import wraps
+
+def isloggedin(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if 'logged_in' in session:
+            return f(*args,**kwargs)
+        else:
+            flash('Unauthorized, Please Login', 'danger')
+            return redirect(url_for('login'))
+    return wrap
 
 @app.route('/addbrand', methods=['GET', 'POST'])
+@isloggedin
 def addbrand():
     if request.method == 'POST':
         getbrand = request.form.get('brand')
@@ -21,6 +34,7 @@ def addbrand():
     return render_template('products/addbrand.html', brand='brand')
 
 @app.route('/addcate', methods=['GET', 'POST'])
+@isloggedin
 def addcate():
     if request.method == 'POST':
         getbrand = request.form.get('category')
@@ -37,6 +51,7 @@ def addcate():
     return render_template('products/addbrand.html')
 
 @app.route('/addproduct', methods=['GET', 'POST'])
+@isloggedin
 def addproduct():
     form = Addproducts(request.form)
     ##SQL call for brands and categories
