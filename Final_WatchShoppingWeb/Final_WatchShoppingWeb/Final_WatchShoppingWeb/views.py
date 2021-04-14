@@ -136,7 +136,7 @@ def logout():
 def admin():
     ##SQL call 'addproduct' table
     cur = conn.cursor()
-    cur.execute("SELECT p.name, p.price, p.discount, b.name, p.image_1 FROM addproduct as p, brands as b WHERE b.id=p.brand_id")
+    cur.execute("SELECT p.name, p.price, p.discount, b.name, p.image_1, p.id FROM addproduct as p, brands as b WHERE b.id=p.brand_id")
     products = cur.fetchall()
     cur.close()
     ##

@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-8">
-                <h2 class="text-center big-info">Add a Product</h2>
+                <h2 class="text-center big-info">Update a Product</h2>
                 {% from "_formhelpers.html" import render_field %}
                 <form action="" method="POST" enctype="multipart/form-data">
                     {{ render_field(form.name, class="form-control") }}
@@ -14,7 +14,7 @@
                     {{ render_field(form.stock, class="form-control") }}
                     <label for="bands">Add a brand</label>
                     <select name="brand" id="brand" class="form-control" required>
-                        <option value="">Select A brand</option>
+                        <option value="{{product[8]}}">{{productbrand[0]}}</option>
                         {% for brand in brands %}
                         <option value="{{brand[0]}}">{{brand[1]}}</option>
                         {% endfor %}
@@ -22,7 +22,7 @@
 
                     <label for="category">Add a category</label>
                     <select name="category" id="category" class="form-control" required>
-                        <option value="">Select A category</option>
+                        <option value="{{product[9]}}">{{productcat[0]}}</option>
                         {% for category in categories %}
                         <option value="{{category[0]}}">{{category[1]}}</option>
                         {% endfor %}
@@ -32,13 +32,13 @@
 
                     <div class="container">
                         <div class="row">
-                            <div class="col-md-4">{{ render_field(form.image_1, class="form-control", required) }}</div>
-                            <div class="col-md-4">{{ render_field(form.image_2, class="form-control", required) }}</div>
-                            <div class="col-md-4">{{ render_field(form.image_3, class="form-control", required) }}</div>
+                            <div class="col-md-4"><input type="file" name="image_1" class="form-control"/></div>
+                            <div class="col-md-4"><input type="file" name="image_2" class="form-control"/></div>
+                            <div class="col-md-4"><input type="file" name="image_3" class="form-control" /></div>
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-outline-info mt-4">Add Product</button>
+                    <button type="submit" class="btn btn-outline-info mt-4 mb-5">Update Product</button>
 
                 </form>
             </div>
