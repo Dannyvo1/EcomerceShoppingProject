@@ -70,7 +70,7 @@ def home():
         'admin/index.html',
         title='Admin page',
     )
-
+#####Admin zone
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     """Renders the home page."""
@@ -140,7 +140,22 @@ def admin():
     ##
     return render_template('admin/index.html', title='Admin Page', products=products)
 
+@app.route('/brands', methods=['GET', 'POST'])
+@isloggedin
+def brands():
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM brands ORDER BY id DESC;")
+    allbrands = cur.fetchall()
+    return render_template('admin/brand.html', title="Brand Page", allbrands=allbrands)
 
+@app.route('/category', methods=['GET', 'POST'])
+@isloggedin
+def category():
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM category ORDER BY id DESC;")
+    allcategory = cur.fetchall()
+    return render_template('admin/brand.html', title="Category Page", allcategory=allcategory)
+#### end zone
 
 @app.route('/contact')
 def contact():

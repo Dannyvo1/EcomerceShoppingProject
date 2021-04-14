@@ -63,6 +63,7 @@
     <Content Include="Final_WatchShoppingWeb\static\content\bootstrap.min.css" />
     <Content Include="Final_WatchShoppingWeb\static\scripts\bootstrap.bundle.min.js" />
     <Content Include="Final_WatchShoppingWeb\static\scripts\popper.min.js" />
+    <Content Include="Final_WatchShoppingWeb\templates\admin\brand.html" />
     <Content Include="Final_WatchShoppingWeb\templates\admin\index.html" />
     <Content Include="Final_WatchShoppingWeb\templates\admin\login.html" />
     <Content Include="Final_WatchShoppingWeb\templates\admin\register.html" />
@@ -70,6 +71,7 @@
     <Content Include="Final_WatchShoppingWeb\templates\products\addproduct.html" />
     <Content Include="Final_WatchShoppingWeb\templates\_formhelpers.html" />
     <Content Include="Final_WatchShoppingWeb\templates\_messages.html" />
+    <Content Include="Final_WatchShoppingWeb\templates\admin\_navbar.html" />
     <Content Include="requirements.txt" />
     <Content Include="Final_WatchShoppingWeb\static\content\bootstrap.css" />
     <Content Include="Final_WatchShoppingWeb\static\content\site.css" />
