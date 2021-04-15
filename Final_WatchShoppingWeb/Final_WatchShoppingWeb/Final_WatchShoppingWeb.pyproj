@@ -62,6 +62,7 @@
   <ItemGroup>
     <Content Include="Final_WatchShoppingWeb\static\content\bootstrap.min.css" />
     <Content Include="Final_WatchShoppingWeb\static\scripts\bootstrap.bundle.min.js" />
+    <Content Include="Final_WatchShoppingWeb\static\scripts\jquery.min.js" />
     <Content Include="Final_WatchShoppingWeb\static\scripts\popper.min.js" />
     <Content Include="Final_WatchShoppingWeb\templates\admin\brand.html" />
     <Content Include="Final_WatchShoppingWeb\templates\admin\index.html" />

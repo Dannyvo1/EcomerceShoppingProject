@@ -1,15 +1,23 @@
-from Final_WatchShoppingWeb import db
+from Final_WatchShoppingWeb import db, Base
+from sqlalchemy import Column, Integer, String, create_engine, BIGINT
 
-class Brand(db.Model):
+class Brand(Base):
     """description of class"""
     __tablename__='brands'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(30), nullable=False, unique=True)
+    id = Column(BIGINT, primary_key = True, autoincrement=True, nullable=False)
+    name = Column(String)
+
+    def __init__(self, id, name):
+        self.id = id
+        self.name = name
+
+    
 
 class Category(db.Model):
     __tablename__='category'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(30), nullable=False, unique=True)
+    id = Column(BIGINT, primary_key = True, autoincrement=True, nullable=False)
+    name = Column(String)
 
-
-db.create_all()
+    def __init__(self, id, name):
+        self.id = id
+        self.name = name

@@ -5,7 +5,9 @@ This script runs the Final_WatchShoppingWeb application using a development serv
 from os import environ
 from Final_WatchShoppingWeb import app
 
+
 if __name__ == '__main__':
+
     HOST = environ.get('SERVER_HOST', 'localhost')
     try:
         PORT = int(environ.get('SERVER_PORT', '5555'))

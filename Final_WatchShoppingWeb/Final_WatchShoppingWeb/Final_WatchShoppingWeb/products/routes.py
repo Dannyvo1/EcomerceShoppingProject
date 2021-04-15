@@ -1,20 +1,13 @@
 import secrets, os
 
 from flask import render_template, request, flash, redirect, url_for, session, current_app
-from Final_WatchShoppingWeb import db, app, conn, photos
+from Final_WatchShoppingWeb import db, app, conn, photos, session
 from .models import Brand, Category
 from .forms import Addproducts
+from Final_WatchShoppingWeb.views import isloggedin
 from functools import wraps
 
-def isloggedin(f):
-    @wraps(f)
-    def wrap(*args, **kwargs):
-        if 'logged_in' in session:
-            return f(*args,**kwargs)
-        else:
-            flash('Unauthorized, Please Login', 'danger')
-            return redirect(url_for('login'))
-    return wrap
+
 
 @app.route('/addbrand', methods=['GET', 'POST'])
 @isloggedin
@@ -33,6 +26,26 @@ def addbrand():
         return redirect(url_for('addbrand'))
     return render_template('products/addbrand.html', brand='brand')
 
+@app.route('/addcat', methods=['GET', 'POST'])
+@isloggedin
+def addcat():
+    if request.method == 'POST':
+        getcat = request.form.get('category')
+        category = Category(name=getcat)
+        session.add(category)
+        session.flush()
+        session.commit()
+        #cur = conn.cursor()
+        #cur.execute("INSERT INTO brands (name) VALUES ('{0}')".format(getbrand))
+        #conn.commit()
+        #cur.close()
+        #brand = Brand(name=getbrand)
+        #db.session.add(brand)
+        #db.session.commit()
+        flash(f'The Brand {getcat} was added to your data', 'success')
+        return redirect(url_for('addbrand'))
+    return render_template('products/addbrand.html', category='category')
+
 @app.route('/updatebrand/<int:id>', methods=['GET', 'POST'])
 @isloggedin
 def updatebrand(id):
@@ -49,6 +62,51 @@ def updatebrand(id):
         flash(f'Your brand not exist!' 'danger')
     cur.close()
     return render_template('products/updatebrand.html', title="Update brand Page", updatebrand=updatebrand)
+
+@app.route('/deletebrand/<int:id>', methods=['GET', 'POST'])
+def deletebrand(id):
+    ##
+    name = session.query(Brand).filter(Brand.id == id).one()
+
+    #cur=conn.cursor()
+    #cur.execute("SELECT * FROM brands WHERE id={0}".format(id))
+    #brand = cur.fetchall()
+    if request.method=="POST":
+        if name:
+            #cur=conn.cursor()
+            #cur.execute("DELETE FROM brands WHERE id={0}".format(id))
+            #conn.commit()
+            session.delete(name)
+            session.commit()
+            #for name in brand:
+            flash(f'The brand {name.name} was deleted from your database', 'success')
+            return redirect(url_for('admin'))
+        flash(f'The brand {name.name} cant be deleted', 'warning')
+        cur.close()
+    return redirect(url_for('admin'))
+
+@app.route('/deletecat/<int:id>', methods=['GET', 'POST'])
+def deletecat(id):
+    ##
+    name = session.query(Category).get(id)
+
+    #cur=conn.cursor()
+    #cur.execute("SELECT * FROM brands WHERE id={0}".format(id))
+    #brand = cur.fetchall()
+    if request.method=="POST":
+        if name:
+            #cur=conn.cursor()
+            #cur.execute("DELETE FROM brands WHERE id={0}".format(id))
+            #conn.commit()
+            session.delete(name)
+            session.commit()
+            #for name in brand:
+            flash(f'The category {name.name} was deleted from your database', 'success')
+            return redirect(url_for('admin'))
+        flash(f'The category {name.name} cant be deleted', 'warning')
+        cur.close()
+    return redirect(url_for('admin'))
+
 
 @app.route('/updatecat/<int:id>', methods=['GET', 'POST'])
 @isloggedin
@@ -122,6 +180,7 @@ def addproduct():
     return render_template('products/addproduct.html', title="Add Product page", form=form, brands=brands, categories=categories)
 
 @app.route('/updateproduct/<int:id>', methods=['GET', 'POST'])
+@isloggedin
 def updateproduct(id):
     form = Addproducts(request.form)
     ##SQL call for product details
