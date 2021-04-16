@@ -140,6 +140,9 @@ def admin():
     products = cur.fetchall()
     cur.close()
     ##
+    ###sqlalchemy
+
+    ###
     return render_template('admin/index.html', title='Admin Page', products=products)
 
 @app.route('/brands', methods=['GET', 'POST'])

@@ -2,7 +2,7 @@ import secrets, os
 
 from flask import render_template, request, flash, redirect, url_for, session, current_app
 from Final_WatchShoppingWeb import db, app, conn, photos, session
-from .models import Brand, Category
+from .models import Brand, Category, Product
 from .forms import Addproducts
 from Final_WatchShoppingWeb.views import isloggedin
 from functools import wraps
@@ -82,7 +82,7 @@ def deletebrand(id):
             flash(f'The brand {name.name} was deleted from your database', 'success')
             return redirect(url_for('admin'))
         flash(f'The brand {name.name} cant be deleted', 'warning')
-        cur.close()
+        #cur.close()
     return redirect(url_for('admin'))
 
 @app.route('/deletecat/<int:id>', methods=['GET', 'POST'])
@@ -250,3 +250,27 @@ def updateproduct(id):
 
     cur.close()
     return render_template('products/updateproduct.html', title="Add Product page", form=form, brands=brands, categories=categories, product=product, productbrand=productbrand, productcat=productcat)
+
+@app.route('/deleteproduct/<int:id>', methods=['GET', 'POST'])
+@isloggedin
+def deleteproduct(id):
+    name = session.query(Product).filter(Product.id == id).one()
+    if request.method=="POST":
+        if name:
+            #cur=conn.cursor()
+            #cur.execute("DELETE FROM brands WHERE id={0}".format(id))
+            #conn.commit()
+            try:
+                os.unlink(os.path.join(current_app.root_path, "static/images/" + name.image_1))
+                os.unlink(os.path.join(current_app.root_path, "static/images/" + name.image_2))
+                os.unlink(os.path.join(current_app.root_path, "static/images/" + name.image_3))
+            except Exception as e:
+                print(e)
+            session.delete(name)
+            session.commit()
+            #for name in brand:
+            flash(f'The product {name.name} was deleted from your database', 'success')
+            return redirect(url_for('admin'))
+        flash(f'The product {name.name} cant be deleted', 'warning')
+        cur.close()
+    return redirect(url_for('admin'))

@@ -22,11 +22,39 @@
                 <td>{{loop.index}}</td>
                 <td>{{product[0]}}</td>
                 <td>{{product[1]}}</td>
-                <td>{{product[2]}}</td>
+                <td>{{product[2]}} %</td>
                 <td>{{product[3]}}</td>
                 <td><img src="{{url_for('static', filename='images/' + product[4])}}" , width="50" , height="40" /></td>
-                <td><a href="updateproduct/{{product[5]}}", class="btn btn-info btn-sm">Edit</a></td>
-                <td><a href="updateproduct/{{product[5]}}", class="btn btn-danger btn-sm">Delete</a></td>
+                <td><a href="updateproduct/{{product[5]}}" , class="btn btn-info btn-sm">Edit</a></td>
+                
+                <td>
+                    <!--<a href="updateproduct/" , class="btn btn-danger btn-sm">Delete</a>-->
+                    <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#exampleModal-{{product[5]}}">
+                        Delete
+                    </button>
+                </td>
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal-{{product[5]}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">{{product[0]}}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <span class="text-danger">Are you sure that want to delete this category {{product[0]}}</span>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">Cancel</button>
+                                <form action="/deleteproduct/{{product[5]}}" , method="POST">
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </tr>
             {% endfor %}
             {% endif %}
