@@ -70,6 +70,9 @@
     <Content Include="Final_WatchShoppingWeb\templates\admin\register.html" />
     <Content Include="Final_WatchShoppingWeb\templates\products\addbrand.html" />
     <Content Include="Final_WatchShoppingWeb\templates\products\addproduct.html" />
+    <Content Include="Final_WatchShoppingWeb\templates\products\index.html" />
+    <Content Include="Final_WatchShoppingWeb\templates\products\layout.html" />
+    <Content Include="Final_WatchShoppingWeb\templates\products\single_page.html" />
     <Content Include="Final_WatchShoppingWeb\templates\products\updatebrand.html" />
     <Content Include="Final_WatchShoppingWeb\templates\products\updateproduct.html" />
     <Content Include="Final_WatchShoppingWeb\templates\_formhelpers.html" />

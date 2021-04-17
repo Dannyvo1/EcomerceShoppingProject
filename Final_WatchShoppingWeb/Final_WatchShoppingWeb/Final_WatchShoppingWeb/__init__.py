@@ -25,7 +25,7 @@ def loadSession():
     session = Session()
     return session
 
-session = loadSession()
+_session = loadSession()
 #res = session.query(Places).all()
 #print = res[1].title
 #Image upload set

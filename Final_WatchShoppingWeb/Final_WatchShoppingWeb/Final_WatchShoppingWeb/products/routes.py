@@ -1,7 +1,7 @@
 import secrets, os
 
 from flask import render_template, request, flash, redirect, url_for, session, current_app
-from Final_WatchShoppingWeb import db, app, conn, photos, session
+from Final_WatchShoppingWeb import db, app, conn, photos, _session
 from .models import Brand, Category, Product
 from .forms import Addproducts
 from Final_WatchShoppingWeb.views import isloggedin
@@ -32,9 +32,9 @@ def addcat():
     if request.method == 'POST':
         getcat = request.form.get('category')
         category = Category(name=getcat)
-        session.add(category)
-        session.flush()
-        session.commit()
+        _session.add(category)
+        _session.flush()
+        _session.commit()
         #cur = conn.cursor()
         #cur.execute("INSERT INTO brands (name) VALUES ('{0}')".format(getbrand))
         #conn.commit()
@@ -66,7 +66,7 @@ def updatebrand(id):
 @app.route('/deletebrand/<int:id>', methods=['GET', 'POST'])
 def deletebrand(id):
     ##
-    name = session.query(Brand).filter(Brand.id == id).one()
+    name = _session.query(Brand).filter(Brand.id == id).one()
 
     #cur=conn.cursor()
     #cur.execute("SELECT * FROM brands WHERE id={0}".format(id))
@@ -76,8 +76,8 @@ def deletebrand(id):
             #cur=conn.cursor()
             #cur.execute("DELETE FROM brands WHERE id={0}".format(id))
             #conn.commit()
-            session.delete(name)
-            session.commit()
+            _session.delete(name)
+            _session.commit()
             #for name in brand:
             flash(f'The brand {name.name} was deleted from your database', 'success')
             return redirect(url_for('admin'))
@@ -88,7 +88,7 @@ def deletebrand(id):
 @app.route('/deletecat/<int:id>', methods=['GET', 'POST'])
 def deletecat(id):
     ##
-    name = session.query(Category).get(id)
+    name = _session.query(Category).get(id)
 
     #cur=conn.cursor()
     #cur.execute("SELECT * FROM brands WHERE id={0}".format(id))
@@ -98,8 +98,8 @@ def deletecat(id):
             #cur=conn.cursor()
             #cur.execute("DELETE FROM brands WHERE id={0}".format(id))
             #conn.commit()
-            session.delete(name)
-            session.commit()
+            _session.delete(name)
+            _session.commit()
             #for name in brand:
             flash(f'The category {name.name} was deleted from your database', 'success')
             return redirect(url_for('admin'))
@@ -165,10 +165,16 @@ def addproduct():
         disc = form.discription.data
         brand = request.form.get('brand')
         category = request.form.get('category')
-
-        image_1 = photos.save(request.files.get('image_1'), name=secrets.token_hex(10)+".")
-        image_2 = photos.save(request.files.get('image_2'), name=secrets.token_hex(10)+".")
-        image_3 = photos.save(request.files.get('image_3'), name=secrets.token_hex(10)+".") 
+        
+        image_1 = ''
+        image_2 = ''
+        image_3 = ''
+        if request.files['image_1'].filename != '':
+            image_1 = photos.save(request.files.get('image_1'), name=secrets.token_hex(10)+".")
+        if request.files['image_2'].filename != '':
+            image_2 = photos.save(request.files.get('image_2'), name=secrets.token_hex(10)+".")
+        if request.files['image_3'].filename != '':
+            image_3 = photos.save(request.files.get('image_3'), name=secrets.token_hex(10)+".") 
         
         ##SQL for add a product
         cur.execute("INSERT INTO addproduct (name, price, discount, stock, colors, disc, brand_id, category_id, image_1, image_2, image_3) VALUES('{0}', {1}, {2}, {3},'{4}','{5}', {6}, {7},'{8}','{9}','{10}')".format(name, price, discount, stock, color, disc, brand, category, image_1, image_2, image_3))
@@ -254,7 +260,7 @@ def updateproduct(id):
 @app.route('/deleteproduct/<int:id>', methods=['GET', 'POST'])
 @isloggedin
 def deleteproduct(id):
-    name = session.query(Product).filter(Product.id == id).one()
+    name = _session.query(Product).filter(Product.id == id).one()
     if request.method=="POST":
         if name:
             #cur=conn.cursor()
@@ -266,8 +272,8 @@ def deleteproduct(id):
                 os.unlink(os.path.join(current_app.root_path, "static/images/" + name.image_3))
             except Exception as e:
                 print(e)
-            session.delete(name)
-            session.commit()
+            _session.delete(name)
+            _session.commit()
             #for name in brand:
             flash(f'The product {name.name} was deleted from your database', 'success')
             return redirect(url_for('admin'))

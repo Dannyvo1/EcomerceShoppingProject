@@ -34,9 +34,9 @@ class Product(Base):
     brand_id = Column(Integer, ForeignKey("brands.id"), nullable=False)
     category_id = Column(Integer, ForeignKey("category.id"), nullable=False)
     
-    image_1 = Column(String(150), nullable=False, default='image.jpg')
-    image_2 = Column(String(150), nullable=False, default='image.jpg')
-    image_3 = Column(String(150), nullable=False, default='image.jpg')
+    image_1 = Column(String(150), nullable=True, default='image.jpg')
+    image_2 = Column(String(150), nullable=True, default='image.jpg')
+    image_3 = Column(String(150), nullable=True, default='image.jpg')
 
     def __init__(self, id, name, price, discount, stock, color, disc, pub_date, brand_id, category_id, image_1, image_2, image_3):
         self.id = id
