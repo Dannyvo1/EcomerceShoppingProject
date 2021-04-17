@@ -44,8 +44,11 @@ def home():
 @app.route('/product/<int:id>')
 @isloggedin
 def single_page(id):
-    product = _session.query(Product).filter(Product.id == id)
-    return render_template('products/single_page.html', product=product)
+    products = _session.query(Product).filter(Product.id == id).all()
+    _brands = _session.query(Brand).join(Product, (Brand.id == Product.brand_id)).all()
+    _categories = _session.query(Category).join(Product, (Category.id == Product.category_id)).all()
+    return render_template('products/single_page.html', products=products, _brands=_brands, _categories=_categories)
+
 @app.route('/brand/<int:id>')
 @isloggedin
 def get_brand(id):
