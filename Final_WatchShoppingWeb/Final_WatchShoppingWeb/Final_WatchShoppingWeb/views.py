@@ -4,11 +4,12 @@ Routes and views for the flask application.
 import os
 from datetime import datetime
 from flask import render_template, request, flash, redirect, url_for, session
-from Final_WatchShoppingWeb import app, conn, _session
+from Final_WatchShoppingWeb import app, conn, _session, search 
 from flask_restful import Api, Resource, reqparse
 from werkzeug.security import generate_password_hash, check_password_hash
 from .forms import registrationForm, loginform
 from Final_WatchShoppingWeb.products.models import Product, Brand, Category
+from Final_WatchShoppingWeb.models import addProduct, Brand_db, Category_db
 from functools import wraps
 from sqlalchemy_paginator import Paginator
 
@@ -23,7 +24,7 @@ def getCat_formenu():
 def isloggedin(f):
     @wraps(f)
     def wrap(*args, **kwargs):
-        if 'logged_in' in session:
+        if 'logged_in' in session and session['logged_in']==True:
             return f(*args,**kwargs)
         else:
             flash('Unauthorized, Please Login', 'danger')
@@ -34,21 +35,34 @@ def isloggedin(f):
 def home():
     """Renders the home page."""
     #Pagination
-    pagenumber = request.args.get('pagenumber', 1, type=int)
-    query = _session.query(Product)
-    paginator = Paginator(query, 10)
-    pages_list = []
-    for page in paginator:
-        pages_list.append(page.number)
+    page = request.args.get('page', 1, type=int)
+    products = addProduct.query.filter(addProduct.stock > 0).paginate(page=page, per_page=1)
+    #query = _session.query(Product)
+    #paginator = Paginator(query, 10)
+    #pages_list = []
+    #for page in paginator:
+    #    pages_list.append(page.number)
     #pagenumber = int(pagenumber)
     #####
     #products = _session.query(Product).filter(Product.stock > 0).all()
     _brands = getBrands_formenu()
     _categories = getCat_formenu()
-    return render_template('products/index.html', paginator=paginator, pagenumber=pagenumber, pages_list=pages_list, _brands=_brands, _categories=_categories)
+    return render_template('products/index.html', products=products,  _brands=_brands, _categories=_categories)
+
+#@app.route('/search', methods=['GET', 'POST'])
+#def search():
+#    _search = _session.query(Product).order_by(Product.name).all()
+#    if request.method == 'POST':
+#        _search = _session.query(Product).filter(Product.name.like('%'+ request.form.get('search') + '%')).all()
+#    return render_template('products/index.html', _search=_search, _brands=getBrands_formenu(), _categories=getCat_formenu())
+
+@app.route('/result', methods=['GET', 'POST'])
+def result():
+    searchword = request.args.get('q')
+    products = addProduct.query.msearch(searchword, fields=['name', 'disc'], limit=6)
+    return render_template('products/result.html', products=products, _brands=getBrands_formenu(), _categories=getCat_formenu())
 
 @app.route('/product/<int:id>')
-@isloggedin
 def single_page(id):
     products = _session.query(Product).filter(Product.id == id).all()
     _brands = getBrands_formenu()
@@ -56,36 +70,36 @@ def single_page(id):
     return render_template('products/single_page.html', products=products, _brands=_brands, _categories=_categories)
 
 @app.route('/brand/<int:id>')
-@isloggedin
 def get_brand(id):
-    #Pagination
-    pagenumber = request.args.get('pagenumber', 1, type=int)
-    query = _session.query(Product).filter(Product.brand_id == id)
-    brand = Paginator(query, 10)
-    pages_list = []
-    for page in brand:
-        pages_list.append(page.number)
-    ####
+    ##Pagination
+    page = request.args.get('page', 1, type=int)
+    #query = _session.query(Product).filter(Product.brand_id == id)
+    #brand = Paginator(query, 10)
+    #pages_list = []
+    #for page in brand:
+    #    pages_list.append(page.number)
+    #####
+    brand = addProduct.query.filter(addProduct.stock > 0, addProduct.brand_id == id).paginate(page=page, per_page=3)
     #brand = _session.query(Product).filter(Product.brand_id == id).all()
     _brands = getBrands_formenu()
     _categories = getCat_formenu()
-    return render_template('products/index.html', brand=brand, id=id, pagenumber=pagenumber, pages_list=pages_list, _brands=_brands, _categories=_categories)
+    return render_template('products/index.html', brand=brand, id=id, _brands=_brands, _categories=_categories)
 
 @app.route('/category/<int:id>')
-@isloggedin
 def get_category(id):
-    #Pagination
-    pagenumber = request.args.get('pagenumber', 1, type=int)
-    query = _session.query(Product).filter(Product.category_id == id)
-    category = Paginator(query, 10)
-    pages_list = []
-    for page in category:
-        pages_list.append(page.number)
-    ####
+    ##Pagination
+    page = request.args.get('page', 1, type=int)
+    #query = _session.query(Product).filter(Product.category_id == id)
+    #category = Paginator(query, 10)
+    #pages_list = []
+    #for page in category:
+    #    pages_list.append(page.number)
+    #####
     #category = _session.query(Product).filter(Product.category_id == id).all()
+    category = addProduct.query.filter(addProduct.stock > 0, addProduct.category_id==id).paginate(page=page, per_page=3)
     _brands = getBrands_formenu()
     _categories = getCat_formenu()
-    return render_template('products/index.html', category=category, id=id, pagenumber=pagenumber, pages_list=pages_list, _categories=_categories, _brands=_brands)
+    return render_template('products/index.html', category=category, id=id, _categories=_categories, _brands=_brands)
 
 #####Admin zone
 @app.route('/register', methods=['GET', 'POST'])
@@ -143,7 +157,7 @@ User Logout
 @app.route('/logout')
 @isloggedin
 def logout():
-    session.clear()
+    session['logged_in']=False
     flash('You are now logged out', 'success')
     return redirect(url_for('login')) 
 
@@ -181,22 +195,3 @@ def category():
     return render_template('admin/brand.html', title="Category Page", allcategory=allcategory)
 #### end zone
 
-@app.route('/contact')
-def contact():
-    """Renders the contact page."""
-    return render_template(
-        'contact.html',
-        title='Contact',
-        year=datetime.now().year,
-        message='Your contact page.'
-    )
-
-@app.route('/about')
-def about():
-    """Renders the about page."""
-    return render_template(
-        'about.html',
-        title='About',
-        year=datetime.now().year,
-        message='Your application description page.'
-    )

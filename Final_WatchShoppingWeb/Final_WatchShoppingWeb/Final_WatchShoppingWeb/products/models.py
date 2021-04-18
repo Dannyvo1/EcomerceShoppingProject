@@ -5,25 +5,25 @@ from datetime import datetime
 class Brand(Base):
     """description of class"""
     __tablename__='brands'
-    id = Column(BIGINT, primary_key = True, autoincrement=True, nullable=False)
+    id = Column(Integer, primary_key = True, autoincrement=True, nullable=False)
     name = Column(String)
 
-    def __init__(self, id, name):
-        self.id = id
-        self.name = name
+    #def __init__(self, id, name):
+    #    self.id = id
+    #    self.name = name
 
 class Category(Base):
     __tablename__='category'
-    id = Column(BIGINT, primary_key = True, autoincrement=True, nullable=False)
+    id = Column(Integer, primary_key = True, autoincrement=True, nullable=False)
     name = Column(String)
 
-    def __init__(self, id, name):
-        self.id = id
-        self.name = name
+    #def __init__(self, id, name):
+    #    self.id = id
+    #    self.name = name
 
 class Product(Base):
     __tablename__='addproduct'
-    id = Column(BIGINT, primary_key = True, autoincrement=True, nullable=False)
+    id = Column(Integer, primary_key = True, autoincrement=True, nullable=False)
     name = Column(String(80), nullable=False)
     price = Column(Numeric, nullable=False)
     discount = Column(Integer, default=0)

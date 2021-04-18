@@ -35,11 +35,11 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{url_for('getCart')}}" tabindex="1">Cart ({{session['Shoppingcart']|length}})</a>
+                    <a class="nav-link" href="{{url_for('getCart')}}" tabindex="-1">Cart ({{session['Shoppingcart']|length}})</a>
                 </li>
             </ul>
-            <form class="float-right form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <form class="float-right form-inline my-2 my-lg-0" action="{{url_for('result')}}">
+                <input class="form-control mr-sm-2" name="q" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </form>
         </div>
@@ -83,10 +83,10 @@
                                     <option value="{{col[0]}}">{{col[0]|capitalize}}</option>
                                     {% endfor %}
                                 </select>
-                                
+
                             </td>
                             <td><span id="price-{{key}}"></span></td>
-                            <td><input type="number" value="{{product.quantity}}" name="quantity" min="1" max="10"/></td>
+                            <td><input type="number" value="{{product.quantity}}" name="quantity" min="1" max="10" /></td>
                             {% if product.discount > 0 %}
                             <td>{{product.discount}} % is <span id="afterdiscount-{{key}}"></span></td>
                             {% else %}
@@ -114,7 +114,7 @@
             <table class="table table-sm">
                 <tr>
                     <td></td>
-                    <td><a href="/" class="btn btn-success" >Check out</a></td>
+                    <td><a href="/" class="btn btn-success">Check out</a></td>
                     <td width="35%"></td>
                     <td> <h4>Tax: <span id="tax"></span></h4></td>
                     <td> <h4>Grand total: <span id="grandtotal"></span></h4></td>
