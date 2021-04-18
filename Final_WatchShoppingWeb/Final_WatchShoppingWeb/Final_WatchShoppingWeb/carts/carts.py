@@ -2,6 +2,7 @@
 from Final_WatchShoppingWeb import db, app, conn, photos, _session
 from flask import render_template, request, flash, redirect, url_for, session
 from Final_WatchShoppingWeb.products.models import Product, Brand, Category
+from Final_WatchShoppingWeb.views import getCat_formenu, getBrands_formenu
 
 
 def MagerDicts(dict1, dict2):
@@ -40,23 +41,23 @@ def Addcart():
 
 @app.route('/carts')
 def getCart():
-    if 'Shoppingcart' not in session:
-        return redirect(request.referrer)
+    if 'Shoppingcart' not in session or len(session['Shoppingcart']) <= 0:
+        return redirect(url_for('home'))
     subtotal = 0
     grandtotal = 0
     for key, product in session['Shoppingcart'].items():
-        discount = (product['discount']/100) * float(product['price'])
+        discount = ((product['discount']/100) * float(product['price'])) * float(product['quantity'])
         subtotal += float(product['price']) * int(product['quantity'])
         subtotal -= discount
         tax = ("%.2f" % (.06 *float(subtotal)))
         grandtotal = float("%.2f" % (1.06 * subtotal))
-    _brands = _session.query(Brand).join(Product, (Brand.id == Product.brand_id)).all()
-    _categories = _session.query(Category).join(Product, (Category.id == Product.category_id)).all()
+    _brands = getBrands_formenu()
+    _categories = getCat_formenu()
     return render_template('products/carts.html', tax=tax, grandtotal=grandtotal, _brands=_brands, _categories=_categories)
 
 @app.route('/updatecart/<int:code>', methods=['POST'])
 def updatecart(code):
-    if 'Shoppingcart' not in session and len(session['Shoppingcart']) <= 0:
+    if 'Shoppingcart' not in session or len(session['Shoppingcart']) <= 0:
         return redirect(url_for('home'))
     if request.method == "POST":
         quantity = request.form.get('quantity')
@@ -72,6 +73,21 @@ def updatecart(code):
         except Exception as e:
             print(e)
             return redirect(url_for('getCart'))
+
+
+@app.route('/deleteitem/<int:id>')
+def deleteitem(id):
+    if 'Shoppingcart' not in session or len(session['Shoppingcart']) <= 0:
+        return redirect(url_for('home'))
+    try:
+        session.modified = True
+        for key, item in session['Shoppingcart'].items():
+            if int(key) == id:
+                session['Shoppingcart'].pop(key, None)
+                return redirect(url_for('getCart'))
+    except Exception as e:
+        print(e)
+        return redirect(url_for('getCart'))
 
 #@app.route('/empty')
 #def empty_cart():

@@ -66,7 +66,7 @@
                 </thead>
                 <tbody>
                     {% for key, product in session['Shoppingcart'].items() %}
-                    {% set discount = (product.discount/100)*product.price|float %}
+                    {% set discount = ((product.discount/100)*product.price|float)*product.quantity|float %}
 
                     <tr>
                         <td>{{loop.index}}</td>
@@ -96,7 +96,7 @@
                             <td><span id="subtotal-{{key}}"></span></td>
                             <td><button class="btn btn-sm btn-info" type="submit">Update</button></td>
                         </form>
-                        <td><a href="#">Remove</a></td>
+                        <td><a href="{{url_for('deleteitem', id=key)}}" class="btn btn-sm btn-danger">Remove</a></td>
                     </tr>
                     <script>
                     // Create USD currency formatter.
@@ -111,7 +111,7 @@
                     {% endfor %}
                     <tr>
                         <td></td>
-                        <td><a href="/">Countinue shopping</a></td>
+                        <td><a href="/">Check out</a></td>
                         <td colspan="3"><h4>Tax: <span id="tax"></span></h4></td>
                         <td colspan="4"><h4>Grand total: <span id="grandtotal"></span></h4></td>
 

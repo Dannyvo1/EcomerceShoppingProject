@@ -12,7 +12,13 @@ from Final_WatchShoppingWeb.products.models import Product, Brand, Category
 from functools import wraps
 from sqlalchemy_paginator import Paginator
 
+def getBrands_formenu():
+    _brands = _session.query(Brand).join(Product, (Brand.id == Product.brand_id)).all()
+    return _brands
 
+def getCat_formenu():
+    _categories = _session.query(Category).join(Product, (Category.id == Product.category_id)).all()
+    return _categories
 
 def isloggedin(f):
     @wraps(f)
@@ -37,16 +43,16 @@ def home():
     #pagenumber = int(pagenumber)
     #####
     #products = _session.query(Product).filter(Product.stock > 0).all()
-    _brands = _session.query(Brand).join(Product, (Brand.id == Product.brand_id)).all()
-    _categories = _session.query(Category).join(Product, (Category.id == Product.category_id)).all()
+    _brands = getBrands_formenu()
+    _categories = getCat_formenu()
     return render_template('products/index.html', paginator=paginator, pagenumber=pagenumber, pages_list=pages_list, _brands=_brands, _categories=_categories)
 
 @app.route('/product/<int:id>')
 @isloggedin
 def single_page(id):
     products = _session.query(Product).filter(Product.id == id).all()
-    _brands = _session.query(Brand).join(Product, (Brand.id == Product.brand_id)).all()
-    _categories = _session.query(Category).join(Product, (Category.id == Product.category_id)).all()
+    _brands = getBrands_formenu()
+    _categories = getCat_formenu()
     return render_template('products/single_page.html', products=products, _brands=_brands, _categories=_categories)
 
 @app.route('/brand/<int:id>')
@@ -61,8 +67,8 @@ def get_brand(id):
         pages_list.append(page.number)
     ####
     #brand = _session.query(Product).filter(Product.brand_id == id).all()
-    _brands = _session.query(Brand).join(Product, (Brand.id == Product.brand_id)).all()
-    _categories = _session.query(Category).join(Product, (Category.id == Product.category_id)).all()
+    _brands = getBrands_formenu()
+    _categories = getCat_formenu()
     return render_template('products/index.html', brand=brand, id=id, pagenumber=pagenumber, pages_list=pages_list, _brands=_brands, _categories=_categories)
 
 @app.route('/category/<int:id>')
@@ -77,8 +83,8 @@ def get_category(id):
         pages_list.append(page.number)
     ####
     #category = _session.query(Product).filter(Product.category_id == id).all()
-    _categories = _session.query(Category).join(Product, (Category.id == Product.category_id)).all()
-    _brands = _session.query(Brand).join(Product, (Brand.id == Product.brand_id)).all()
+    _brands = getBrands_formenu()
+    _categories = getCat_formenu()
     return render_template('products/index.html', category=category, id=id, pagenumber=pagenumber, pages_list=pages_list, _categories=_categories, _brands=_brands)
 
 #####Admin zone
