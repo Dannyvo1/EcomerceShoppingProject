@@ -52,3 +52,4 @@ db = SQLAlchemy(app)
 
 import Final_WatchShoppingWeb.views
 import Final_WatchShoppingWeb.products.routes
+import Final_WatchShoppingWeb.carts.carts

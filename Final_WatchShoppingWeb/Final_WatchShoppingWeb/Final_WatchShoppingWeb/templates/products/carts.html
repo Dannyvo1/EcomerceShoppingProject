@@ -1,0 +1,113 @@
+﻿{% extends "products/layout.html" %}
+{% block content %}
+<!-- navbar starts -->
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Home</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('home')}}">All products</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Brands
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        {% for _brand in _brands %}
+                        <a class="dropdown-item" href="{{url_for('get_brand', id=_brand.id)}}">{{_brand.name}}</a>
+                        {% endfor %}
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Categories
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        {% for _category in _categories %}
+                        <a class="dropdown-item" href="{{url_for('get_category', id=_category.id)}}">{{_category.name}}</a>
+                        {% endfor %}
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('getCart')}}" tabindex="1">Cart ({{session['Shoppingcart']|length}})</a>
+                </li>
+            </ul>
+            <form class="float-right form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+</div>
+<!-- navbar ends -->
+<div class="container">
+    <div class="row">
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Sr</th>
+                    <th>Name</th>
+                    <th>Color</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Discount</th>
+                    <th>Subtotal</th>
+                    <th>Update</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for key, product in session['Shoppingcart'].items() %}
+                {% set discount = (product.discount/100)*product.price|float %}
+
+                <tr>
+                    <td>{{loop.index}}</td>
+                    <td>{{product.name}}</td>
+                    <td>{{product.color}}</td>
+                    <td><span id="price-{{key}}"></span></td>
+                    <td>{{product.quantity}}</td>
+                    {% if product.discount > 0 %}
+                    <td>{{product.discount}} % is <span id="afterdiscount-{{key}}"></span></td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
+                    {% set subtotal = product.quantity|int * product.price|float %}
+                    <td><span id="subtotal-{{key}}"></span></td>
+                    <td><a href="#">Update</a></td>
+                    <td><a href="#">Remove</a></td>
+                </tr>
+                <script>
+                    // Create USD currency formatter.
+                    var formatter = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' });
+
+                    // Use it.
+
+                    document.getElementById('price-{{key}}').innerHTML = formatter.format({{ product.price }});
+                    document.getElementById('subtotal-{{key}}').innerHTML = formatter.format({{ (subtotal | float) - discount }});
+                    document.getElementById('afterdiscount-{{key}}').innerHTML = formatter.format({{ discount }});
+                </script>
+                {% endfor %}
+                <tr>
+                    <td></td>
+                    <td><a href="/">Countinue shopping</a></td>
+                    <td colspan="3"><h4>Tax: <span id="tax"></span></h4></td>
+                    <td colspan="4"><h4>Grand total: <span id="grandtotal"></span></h4></td>
+
+                </tr>
+                <script>
+                    var formatter = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' });
+                    document.getElementById('tax').innerHTML = formatter.format({{ tax }});
+                    document.getElementById('grandtotal').innerHTML = formatter.format({{ grandtotal }});
+                </script>>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+{% endblock %}

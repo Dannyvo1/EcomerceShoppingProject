@@ -35,7 +35,7 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Disabled</a>
+                    <a class="nav-link" href="{{url_for('getCart')}}" tabindex="-1">Cart ({{session['Shoppingcart']|length}})</a>
                 </li>
             </ul>
             <form class="float-right form-inline my-2 my-lg-0">
@@ -66,7 +66,18 @@
                 </div>
                 <div class="card-footer">
                     <a href="{{url_for('single_page', id=product.id)}}" class="float-left btn btn-sm btn-primary">details</a>
-                    <a href="#" class="float-right btn btn-sm btn-warning">Add to cart</a>
+                    <form action="{{url_for('Addcart')}}" method="post">
+                        <input type="hidden" name="product_id" value="{{product.id}}" />
+                        <button type="submit" class="btn btn-sm btn-warning float-right">Add cart</button>
+                        <input type="hidden" name="quantity" id="" value="1" min="1" max="{{product.stock}}" />
+                        {% set colors = product.colors.split(',') %}
+                        <select name="colors" id="colors" style="visibility:hidden">
+                            {% for color in colors %}
+                            {% set col = color.split(':') %}
+                            <option value="{{col[0]}}">{{col[0]|capitalize}}</option>
+                            {% endfor %}
+                        </select>
+                    </form>
                 </div>
             </div>
         </div>
@@ -112,7 +123,18 @@
                 </div>
                 <div class="card-footer">
                     <a href="{{url_for('single_page', id=product.id)}}" class="float-left btn btn-sm btn-primary">details</a>
-                    <a href="#" class="float-right btn btn-sm btn-warning">Add to cart</a>
+                    <form action="{{url_for('Addcart')}}" method="post">
+                        <input type="hidden" name="product_id" value="{{product.id}}" />
+                        <button type="submit" class="btn btn-sm btn-warning float-right">Add cart</button>
+                        <input type="hidden" name="quantity" id="" value="1" min="1" max="{{product.stock}}" />
+                        {% set colors = product.colors.split(',') %}
+                        <select name="colors" id="colors" style="visibility:hidden">
+                            {% for color in colors %}
+                            {% set col = color.split(':') %}
+                            <option value="{{col[0]}}">{{col[0]|capitalize}}</option>
+                            {% endfor %}
+                        </select>
+                    </form>
                 </div>
             </div>
         </div>
@@ -156,9 +178,20 @@
                     <h5 class="text-center">{{product.name}}</h5>
                     <p class="text-center">Giá <span id="result-{{product.id}}"></span></p>
                 </div>
-                <div class="card-footer">
+                <div class="card-footer"style="height:70px">
                     <a href="{{url_for('single_page', id=product.id)}}" class="float-left btn btn-sm btn-primary">details</a>
-                    <a href="#" class="float-right btn btn-sm btn-warning">Add to cart</a>
+                    <form action="{{url_for('Addcart')}}" method="post">
+                        <input type="hidden" name="product_id" value="{{product.id}}" />
+                        <button type="submit" class="btn btn-sm btn-warning float-right">Add cart</button>
+                        <input type="hidden" name="quantity" id="" value="1" min="1" max="{{product.stock}}" />
+                        {% set colors = product.colors.split(',') %}
+                        <select name="colors" id="colors" style="visibility:hidden">
+                            {% for color in colors %}
+                            {% set col = color.split(':') %}
+                            <option value="{{col[0]}}">{{col[0]|capitalize}}</option>
+                            {% endfor %}
+                        </select>
+                    </form>
                 </div>
             </div>
         </div>

@@ -28,6 +28,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Final_WatchShoppingWeb\carts\carts.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Final_WatchShoppingWeb\forms.py">
       <SubType>Code</SubType>
     </Compile>
@@ -49,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Final_WatchShoppingWeb\" />
+    <Folder Include="Final_WatchShoppingWeb\carts\" />
     <Folder Include="Final_WatchShoppingWeb\products\" />
     <Folder Include="Final_WatchShoppingWeb\static\" />
     <Folder Include="Final_WatchShoppingWeb\static\content\" />
@@ -72,9 +76,11 @@
     <Content Include="Final_WatchShoppingWeb\templates\products\addproduct.html" />
     <Content Include="Final_WatchShoppingWeb\templates\products\index.html" />
     <Content Include="Final_WatchShoppingWeb\templates\products\layout.html" />
+    <Content Include="Final_WatchShoppingWeb\templates\products\navbar.html" />
     <Content Include="Final_WatchShoppingWeb\templates\products\single_page.html" />
     <Content Include="Final_WatchShoppingWeb\templates\products\updatebrand.html" />
     <Content Include="Final_WatchShoppingWeb\templates\products\updateproduct.html" />
+    <Content Include="Final_WatchShoppingWeb\templates\products\carts.html" />
     <Content Include="Final_WatchShoppingWeb\templates\_formhelpers.html" />
     <Content Include="Final_WatchShoppingWeb\templates\_messages.html" />
     <Content Include="Final_WatchShoppingWeb\templates\admin\_navbar.html" />
