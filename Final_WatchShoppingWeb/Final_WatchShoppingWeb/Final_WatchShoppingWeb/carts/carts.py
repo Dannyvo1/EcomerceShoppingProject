@@ -25,7 +25,10 @@ def Addcart():
             if 'Shoppingcart' in session:
                 print(session['Shoppingcart'])
                 if product_id in session['Shoppingcart']:
-                    print("This product is already in your cart")
+                    for key, item in session['Shoppingcart'].items():
+                        if int(key) == int(product_id):
+                            session.modified = True
+                            item['quantity'] = int(item['quantity']) + 1
                 else:
                     session['Shoppingcart'] = MagerDicts(session['Shoppingcart'], DicItems)
                     return redirect(request.referrer)
@@ -89,10 +92,10 @@ def deleteitem(id):
         print(e)
         return redirect(url_for('getCart'))
 
-#@app.route('/empty')
-#def empty_cart():
-#    try:
-#        session.clear()
-#        return redirect(url_for('home'))
-#    except Exception as e:
-#        print(e) 
+@app.route('/clearcart')
+def clearcart():
+    try:
+        session.pop('Shoppingcart', None)
+        return redirect(url_for('home'))
+    except Exception as e:
+        print(e) 
