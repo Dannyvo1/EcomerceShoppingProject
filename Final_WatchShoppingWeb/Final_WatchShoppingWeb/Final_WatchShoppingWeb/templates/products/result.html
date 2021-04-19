@@ -1,50 +1,8 @@
 ﻿{% extends "products/layout.html" %}
 {% block content %}
 <!-- navbar starts -->
-<div class="container">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Home</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+{% include 'products/navbar.html' %}
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-
-                <li class="nav-item">
-                    <a class="nav-link" href="{{url_for('home')}}">All products</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Brands
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        {% for _brand in _brands %}
-                        <a class="dropdown-item" href="{{url_for('get_brand', id=_brand.id)}}">{{_brand.name}}</a>
-                        {% endfor %}
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Categories
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        {% for _category in _categories %}
-                        <a class="dropdown-item" href="{{url_for('get_category', id=_category.id)}}">{{_category.name}}</a>
-                        {% endfor %}
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{url_for('getCart')}}" tabindex="-1">Cart ({{session['Shoppingcart']|length}})</a>
-                </li>
-            </ul>
-            <form class="float-right form-inline my-2 my-lg-0" action="{{url_for('result')}}">
-                <input class="form-control mr-sm-2" name="q" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
-        </div>
-    </nav>
-</div>
 <!-- navbar ends -->
 <div class="container">
     <div class="row">
@@ -99,4 +57,4 @@
         </div>
     </div>
 </div>
-    {% endblock %}
+    {% endblock content %}
