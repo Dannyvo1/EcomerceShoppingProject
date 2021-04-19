@@ -47,6 +47,13 @@ def customerLogin():
         return redirect(url_for('customerLogin'))
     return render_template('customer/login.html', form=form)
 
+
+@app.route('/customer/logout')
+def customer_logout():
+    logout_user()
+    return redirect(url_for('home'))
+
+
 def send_mail(name, recip):
     msg = Message('Hello', sender = 'dannyvo243@gmail.com', recipients = [str(recip)])
     msg.body = """Xin chúc mừng quý khách {} đã trở thành khách hàng thân thiết của H&T Shop.

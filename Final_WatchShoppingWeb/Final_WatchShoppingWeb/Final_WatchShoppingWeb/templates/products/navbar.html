@@ -32,6 +32,21 @@
                         {% endfor %}
                     </div>
                 </li>
+                {% if current_user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="{{url_for('customer_logout')}}">{{current_user.name}}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('customer_logout')}}">logout</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('customer_register')}}">Sign in</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('customerLogin')}}">login</a>
+                </li>
+                {% endif %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{url_for('getCart')}}" tabindex="-1">Cart ({{session['Shoppingcart']|length}})</a>
                 </li>
