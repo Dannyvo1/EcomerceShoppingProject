@@ -42,7 +42,11 @@ Base = declarative_base(engine)
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
-
+with app.app_context():
+    if db.engine.url.drivername == 'postgresql':
+        migrate.init_app(app, db, render_as_batch=True)
+    else:
+        migrate.init_app(app, db)
 ###Search
 search = Search()
 search.init_app(app)

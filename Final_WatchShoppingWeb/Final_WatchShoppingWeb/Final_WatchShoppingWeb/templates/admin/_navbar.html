@@ -6,6 +6,45 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
+                {% if allbrands %}
+                <li class="nav-item active">
+                    <a class="nav-link" href="/admin">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/brands">Brands</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/addbrand">Add a Brand</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/category">Categories</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('logout')}}">Logout</a>
+                </li>
+                <li>
+                    <a href="{{url_for('register')}}" class="btn btn-warning float-right">Register for another Admin</a>
+                </li>
+                {% elif allcategory %}
+                <li class="nav-item active">
+                    <a class="nav-link" href="/admin">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/brands">Brands</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/category">Categories</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/addcat">Add a Category</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('logout')}}">Logout</a>
+                </li>
+                <li>
+                    <a href="{{url_for('register')}}" class="btn btn-warning float-right">Register for another Admin</a>
+                </li>
+                {% else %}
                 <li class="nav-item active">
                     <a class="nav-link" href="/admin">Home <span class="sr-only">(current)</span></a>
                 </li>
@@ -18,6 +57,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{url_for('logout')}}">Logout</a>
                 </li>
+                <li>
+                    <a href="{{url_for('register')}}" class="btn btn-warning float-right">Register for another Admin</a>
+                </li>
+                {% endif %}
+
             </ul>
         </div>
     </nav>

@@ -42,8 +42,8 @@ def addcat():
         #brand = Brand(name=getbrand)
         #db.session.add(brand)
         #db.session.commit()
-        flash(f'The Brand {getcat} was added to your data', 'success')
-        return redirect(url_for('addbrand'))
+        flash(f'The Category {getcat} was added to your data', 'success')
+        return redirect(url_for('addcat'))
     return render_template('products/addbrand.html', category='category')
 
 @app.route('/updatebrand/<int:id>', methods=['GET', 'POST'])
@@ -80,7 +80,7 @@ def deletebrand(id):
             _session.commit()
             #for name in brand:
             flash(f'The brand {name.name} was deleted from your database', 'success')
-            return redirect(url_for('admin'))
+            return redirect(url_for('brands'))
         flash(f'The brand {name.name} cant be deleted', 'warning')
         #cur.close()
     return redirect(url_for('admin'))
@@ -102,7 +102,7 @@ def deletecat(id):
             _session.commit()
             #for name in brand:
             flash(f'The category {name.name} was deleted from your database', 'success')
-            return redirect(url_for('admin'))
+            return redirect(url_for('category'))
         flash(f'The category {name.name} cant be deleted', 'warning')
         cur.close()
     return redirect(url_for('admin'))
@@ -139,8 +139,8 @@ def addcate():
         #brand = Brand(name=getbrand)
         #db.session.add(brand)
         #db.session.commit()
-        flash(f'The Brand {getbrand} was added to your data', 'success')
-        return redirect(url_for('addbrand'))
+        flash(f'The Category {getbrand} was added to your data', 'success')
+        return redirect(url_for('addcate'))
     return render_template('products/addbrand.html')
 
 @app.route('/addproduct', methods=['GET', 'POST'])

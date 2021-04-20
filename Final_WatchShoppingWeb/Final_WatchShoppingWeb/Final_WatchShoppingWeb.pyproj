@@ -84,7 +84,10 @@
     <Content Include="Final_WatchShoppingWeb\templates\admin\login.html" />
     <Content Include="Final_WatchShoppingWeb\templates\admin\register.html" />
     <Content Include="Final_WatchShoppingWeb\templates\customer\login.html" />
+    <Content Include="Final_WatchShoppingWeb\templates\customer\order.html" />
+    <Content Include="Final_WatchShoppingWeb\templates\customer\pdf.html" />
     <Content Include="Final_WatchShoppingWeb\templates\customer\register.html" />
+    <Content Include="Final_WatchShoppingWeb\templates\customer\thank.html" />
     <Content Include="Final_WatchShoppingWeb\templates\products\addbrand.html" />
     <Content Include="Final_WatchShoppingWeb\templates\products\addproduct.html" />
     <Content Include="Final_WatchShoppingWeb\templates\products\index.html" />

@@ -71,7 +71,7 @@
             <table class="table table-sm">
                 <tr>
                     <td></td>
-                    <td><a href="/" class="btn btn-success">Check out</a></td>
+                    <td><a href="{{url_for('get_order')}}" class="btn btn-success">Check out</a></td>
                     <td width="35%"></td>
                     <td> <h4>Tax: <span id="tax"></span></h4></td>
                     <td> <h4>Grand total: <span id="grandtotal"></span></h4></td>
@@ -83,7 +83,7 @@
 
                     document.getElementById('tax').innerHTML = formatter.format({{ tax }});
                     document.getElementById('grandtotal').innerHTML = formatter.format({{ grandtotal }});
-                </script>>
+                </script>
             </table>
         </div>
     </div>
