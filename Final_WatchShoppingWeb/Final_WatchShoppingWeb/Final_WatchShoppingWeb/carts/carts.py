@@ -64,19 +64,47 @@ def updatecart(code):
         return redirect(url_for('home'))
     if request.method == "POST":
         quantity = request.form.get('quantity')
-        color = request.form.get('color')
+        color = request.form.get('colors')
         try:
             session.modified = True
             for key, item in session['Shoppingcart'].items():
                 if int(key) == code:
-                    item['quantity'] = quantity
-                    item['color'] = color
-                    flash('Item is updated')
-                    return redirect(url_for('getCart'))
+                    try:
+                        item['quantity'] = quantity
+                        item['color'] = color
+                        
+                        #test pattern
+                        basic = ['black', 'white']
+                        _phone = phone(item['price'])
+                        if color not in basic: 
+                            price = special(_phone).price
+                            item['price'] = price
+                        else:
+                            price = normal(key).price
+                            item['price'] = price
+                        #test patern
+                        flash('Item is updated', 'success')
+                        return redirect(url_for('getCart'))
+                    except Exception as e:
+                        print("here is price+++++++++++++++++++++" + e)
         except Exception as e:
             print(e)
             return redirect(url_for('getCart'))
+#####Decorator pattern
+class phone():
+    def __init__(self, price):
+        self.price = price
 
+class special:
+    def __init__(self, phone):
+        self.price = phone.price + 200000
+class normal():
+    def __init__(self, id):
+        self.product = _session.query(Product).filter(Product.id == id).first()
+        self.price =  float(self.product.price)
+        
+####decoreator pattern
+    
 
 @app.route('/deleteitem/<int:id>')
 def deleteitem(id):
