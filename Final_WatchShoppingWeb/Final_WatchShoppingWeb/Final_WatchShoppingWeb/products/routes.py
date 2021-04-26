@@ -87,20 +87,11 @@ def deletebrand(id):
 
 @app.route('/deletecat/<int:id>', methods=['GET', 'POST'])
 def deletecat(id):
-    ##
     name = _session.query(Category).get(id)
-
-    #cur=conn.cursor()
-    #cur.execute("SELECT * FROM brands WHERE id={0}".format(id))
-    #brand = cur.fetchall()
     if request.method=="POST":
         if name:
-            #cur=conn.cursor()
-            #cur.execute("DELETE FROM brands WHERE id={0}".format(id))
-            #conn.commit()
             _session.delete(name)
             _session.commit()
-            #for name in brand:
             flash(f'The category {name.name} was deleted from your database', 'success')
             return redirect(url_for('category'))
         flash(f'The category {name.name} cant be deleted', 'warning')

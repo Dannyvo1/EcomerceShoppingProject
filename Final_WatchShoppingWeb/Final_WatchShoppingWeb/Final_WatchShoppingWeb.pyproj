@@ -46,6 +46,7 @@
     <Compile Include="Final_WatchShoppingWeb\models.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Final_WatchShoppingWeb\patterns.py" />
     <Compile Include="Final_WatchShoppingWeb\products\forms.py">
       <SubType>Code</SubType>
     </Compile>

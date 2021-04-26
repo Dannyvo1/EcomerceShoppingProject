@@ -28,7 +28,7 @@ class Register(db.Model, UserMixin):
         return f"<Register {self.name}>"
 
 class JsonEcodedDict(db.TypeDecorator):
-    impl = db.Text
+    impl = db.String(500)
     def process_bind_param(self, value, dialect):
         if value is None:
             return '{}'

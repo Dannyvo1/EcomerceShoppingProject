@@ -5,6 +5,7 @@ from Final_WatchShoppingWeb import db, app, conn, photos, _session, mail
 from flask_login import login_required, current_user, logout_user, login_user
 from .forms import CustomerRegisterForm, CustomerLoginFrom
 from Final_WatchShoppingWeb.views import isloggedin
+from Final_WatchShoppingWeb.patterns import order_factory
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 from .model import Register, CustomerOrder
@@ -97,7 +98,12 @@ def get_order():
         invoice = secrets.token_hex(5)
         updateshoppingcart()
         try:
-            order = CustomerOrder(invoice=invoice,customer_id=customer_id,orders=session['Shoppingcart'])
+            #order = CustomerOrder(invoice=invoice,customer_id=customer_id,orders=session['Shoppingcart'])
+            ### test
+            Inorder=session['Shoppingcart']
+            _order = order_factory()
+            order = _order.create_order(customer_id, invoice, Inorders)
+            ##
             db.session.add(order)
             db.session.commit()
             session.pop('Shoppingcart')

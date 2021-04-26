@@ -41,6 +41,42 @@ def Addcart():
     finally:
         return redirect(request.referrer)
 
+####Strategy pattern
+class Item:
+  
+    """Constructor function wth price and discount"""
+  
+    def __init__(self, product, discount_strategy = None):
+          
+        """take price and discount strategy"""
+          
+        self.price = float(product['price'])
+        self.per = product['discount']/100
+        self.quantity = int(product['quantity'])
+        self.discount_strategy = discount_strategy
+          
+    """A separate function for price after discount"""
+  
+    def price_after_discount(self):
+          
+        if self.discount_strategy:
+            discount = self.discount_strategy(self)
+        else:
+            discount = 0
+              
+        return self.price * self.quantity - discount
+
+    def __repr__(self):
+          
+        statement = "Price: {}, price after discount: {}"
+        return statement.format(self.price, self.price_after_discount())
+##strategy
+def on_percent_discount(order):
+    return order.price * order.per * order.quantity
+
+def on_sale(order):
+    return order.price * 0.25 + 20
+#####
 
 @app.route('/carts')
 def getCart():
@@ -49,9 +85,15 @@ def getCart():
     subtotal = 0
     grandtotal = 0
     for key, product in session['Shoppingcart'].items():
-        discount = ((product['discount']/100) * float(product['price'])) * float(product['quantity'])
-        subtotal += float(product['price']) * int(product['quantity'])
-        subtotal -= discount
+        #discount = ((product['discount']/100) * float(product['price'])) * float(product['quantity'])
+        #subtotal += float(product['price']) * int(product['quantity'])
+        #subtotal -= discount
+
+        ##Test
+        money = Item(product, discount_strategy = on_percent_discount)
+        subtotal += money.price_after_discount()
+        
+        ##
         tax = ("%.2f" % (.06 *float(subtotal)))
         grandtotal = float("%.2f" % (1.06 * subtotal))
     _brands = getBrands_formenu()
@@ -75,14 +117,15 @@ def updatecart(code):
                         
                         #test pattern
                         basic = ['black', 'white']
-                        _phone = phone(item['price'])
+                        _phone = phone(item['price'], key)
                         if color not in basic: 
                             price = special(_phone).price
                             item['price'] = price
                         else:
-                            price = normal(key).price
+                            price = normal(_phone).price
                             item['price'] = price
                         #test patern
+
                         flash('Item is updated', 'success')
                         return redirect(url_for('getCart'))
                     except Exception as e:
@@ -92,15 +135,15 @@ def updatecart(code):
             return redirect(url_for('getCart'))
 #####Decorator pattern
 class phone():
-    def __init__(self, price):
+    def __init__(self, price, key):
         self.price = price
-
+        self.key = key
 class special:
     def __init__(self, phone):
         self.price = phone.price + 200000
 class normal():
-    def __init__(self, id):
-        self.product = _session.query(Product).filter(Product.id == id).first()
+    def __init__(self, phone):
+        self.product = _session.query(Product).filter(Product.id == phone.key).first()
         self.price =  float(self.product.price)
         
 ####decoreator pattern

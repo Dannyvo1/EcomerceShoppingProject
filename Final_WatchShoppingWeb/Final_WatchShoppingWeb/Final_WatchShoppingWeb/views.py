@@ -12,6 +12,7 @@ from Final_WatchShoppingWeb.products.models import Product, Brand, Category
 from Final_WatchShoppingWeb.models import addProduct, Brand_db, Category_db
 from functools import wraps
 from sqlalchemy_paginator import Paginator
+from Final_WatchShoppingWeb.patterns import Invoker, searchcommand, viewdetailscommand
 
 def getBrands_formenu():
     _brands = _session.query(Brand).join(Product, (Brand.id == Product.brand_id)).all()
@@ -37,34 +38,30 @@ def home():
     #Pagination
     page = request.args.get('page', 1, type=int)
     products = addProduct.query.filter(addProduct.stock > 0).paginate(page=page, per_page=1)
-    #query = _session.query(Product)
-    #paginator = Paginator(query, 10)
-    #pages_list = []
-    #for page in paginator:
-    #    pages_list.append(page.number)
-    #pagenumber = int(pagenumber)
-    #####
-    #products = _session.query(Product).filter(Product.stock > 0).all()
     _brands = getBrands_formenu()
     _categories = getCat_formenu()
     return render_template('products/index.html', products=products,  _brands=_brands, _categories=_categories)
 
-#@app.route('/search', methods=['GET', 'POST'])
-#def search():
-#    _search = _session.query(Product).order_by(Product.name).all()
-#    if request.method == 'POST':
-#        _search = _session.query(Product).filter(Product.name.like('%'+ request.form.get('search') + '%')).all()
-#    return render_template('products/index.html', _search=_search, _brands=getBrands_formenu(), _categories=getCat_formenu())
 
 @app.route('/result', methods=['GET', 'POST'])
 def result():
     searchword = request.args.get('q')
-    products = addProduct.query.msearch(searchword, fields=['name', 'disc'], limit=6)
+    #products = addProduct.query.msearch(searchword, fields=['name', 'disc'], limit=6)
+    ## test pattern
+    invoker = Invoker()
+    invoker.set_on_start(searchcommand(searchword))
+    products = invoker.do_something_important()
+    ##
     return render_template('products/result.html', products=products, _brands=getBrands_formenu(), _categories=getCat_formenu())
 
 @app.route('/product/<int:id>')
 def single_page(id):
-    products = _session.query(Product).filter(Product.id == id).all()
+    #products = _session.query(Product).filter(Product.id == id).all()
+    ## test pattern
+    invoker = Invoker()
+    invoker.set_on_start(viewdetailscommand(id))
+    products = invoker.do_something_important()
+    ##
     _brands = getBrands_formenu()
     _categories = getCat_formenu()
     return render_template('products/single_page.html', products=products, _brands=_brands, _categories=_categories)
@@ -89,13 +86,6 @@ def get_brand(id):
 def get_category(id):
     ##Pagination
     page = request.args.get('page', 1, type=int)
-    #query = _session.query(Product).filter(Product.category_id == id)
-    #category = Paginator(query, 10)
-    #pages_list = []
-    #for page in category:
-    #    pages_list.append(page.number)
-    #####
-    #category = _session.query(Product).filter(Product.category_id == id).all()
     category = addProduct.query.filter(addProduct.stock > 0, addProduct.category_id==id).paginate(page=page, per_page=3)
     _brands = getBrands_formenu()
     _categories = getCat_formenu()
