@@ -6,6 +6,7 @@ from flask_login import login_required, current_user, logout_user, login_user
 from .forms import CustomerRegisterForm, CustomerLoginFrom
 from Final_WatchShoppingWeb.views import isloggedin
 from Final_WatchShoppingWeb.patterns import order_factory
+from Final_WatchShoppingWeb.carts.carts import MagerDicts
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 from .model import Register, CustomerOrder
@@ -34,11 +35,18 @@ def payment():
     orders =  CustomerOrder.query.filter_by(customer_id = current_user.id,invoice=invoice).order_by(CustomerOrder.id.desc()).first()
     orders.status = 'Paid'
     db.session.commit()
-    return redirect(url_for('thanks'))
 
-@app.route('/thanks')
-def thanks():
-    return render_template('customer/thank.html')
+    customer = Register.query.filter_by(id=current_user.id).first()
+    send_mail_two(customer.name, request.form['stripeEmail'])
+
+    _orders = CustomerOrder.query.filter_by(customer_id=current_user.id, status='Pending').order_by(CustomerOrder.id.desc())
+    if _orders:
+        return redirect(url_for('listorders'))
+    return redirect(url_for('home'))
+
+#@app.route('/thanks')
+#def thanks():
+#    return render_template('customer/thank.html')
 
 @app.route('/customer/register', methods=['GET', 'POST'])
 def customer_register():
@@ -58,7 +66,7 @@ def customer_register():
                                 country=form.country.data, district=form.district.data, city=form.city.data, address=form.address.data)
             db.session.add(customer)
             db.session.commit() 
-            send_mail(form.name.data,form.email.data)
+            send_mail_one(form.name.data,form.email.data)
             flash(f'Welcom {form.name.data}, Thank you for registering', 'success')
             return redirect(url_for('customerLogin'))
     return render_template('customer/register.html', form=form)
@@ -98,25 +106,31 @@ def get_order():
         invoice = secrets.token_hex(5)
         updateshoppingcart()
         try:
-            #order = CustomerOrder(invoice=invoice,customer_id=customer_id,orders=session['Shoppingcart'])
-            ### test
-            Inorder=session['Shoppingcart']
-            _order = order_factory()
-            order = _order.create_order(customer_id, invoice, Inorders)
-            ##
+            order = CustomerOrder(invoice=invoice,customer_id=customer_id,orders=session['Shoppingcart'])
+            #### test
+            #Inorder=session['Shoppingcart']
+            #_order = order_factory()
+            #order = _order.create_order(customer_id, invoice, Inorders)
+            ###
             db.session.add(order)
             db.session.commit()
             session.pop('Shoppingcart')
             flash('Your order has been sent successfully','success')
-            return redirect(url_for('orders',invoice=invoice))
+            return redirect(url_for('listorders'))
         except Exception as e:
             print(e)
             flash('Some thing went wrong while get order', 'danger')
             return redirect(url_for('getCart'))
     
+@app.route('/orders')
+@login_required
+def listorders():
+    customer_id = current_user.id
+    customer = Register.query.filter_by(id=customer_id).first()
+    orders = CustomerOrder.query.filter_by(customer_id=customer_id, status='Pending').order_by(CustomerOrder.id.desc())
+    return render_template('customer/pendings.html', orders=orders, customer=customer)
 
-
-@app.route('/orders/<invoice>')
+@app.route('/orders/<invoice>', methods=['POST'])
 @login_required
 def orders(invoice):
     if current_user.is_authenticated:
@@ -165,13 +179,24 @@ def get_pdf(invoice):
 
 
 
-def send_mail(name, recip):
+def send_mail_one(name, recip):
     msg = Message('Hello', sender = 'dannyvo243@gmail.com', recipients = [str(recip)])
     msg.body = """Xin chúc mừng quý khách {} đã trở thành khách hàng thân thiết của H&T Shop.
 
     Chúng tôi sẽ cập nhật thường xuyên các mẫu đồng hồ cao cấp cho quý khách,
 
     Mang đến sự đẳng cấp cho khách hàng là nghĩa vụ của chúng tôi.
+                    
+    Xin trân trọng cám ơn.""".format(str(name))
+    mail.send(msg)
+
+def send_mail_two(name, recip):
+    msg = Message('Hello', sender = 'dannyvo243@gmail.com', recipients = [str(recip)])
+    msg.body = """Xin chúc mừng quý khách {} đã đặt hàng thành công tại H&T Shop.
+
+    Quý khách sẽ nhận được sản phẩm sau 4 ngày, 
+
+    Chúc quý khách có một ngày vui vẻ!
                     
     Xin trân trọng cám ơn.""".format(str(name))
     mail.send(msg)

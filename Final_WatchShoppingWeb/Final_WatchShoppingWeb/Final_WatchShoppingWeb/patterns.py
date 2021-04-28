@@ -12,7 +12,7 @@ from Final_WatchShoppingWeb.customer.model import CustomerOrder
 from Final_WatchShoppingWeb.models import addProduct
 from Final_WatchShoppingWeb.products.models import Product
 
-
+####factory pattern
 class order_action(metaclass=abc.ABCMeta):
     """
     Declare the factory method, which returns an object of type Product.

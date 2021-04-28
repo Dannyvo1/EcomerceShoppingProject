@@ -1,0 +1,41 @@
+﻿{% extends "products/layout.html" %}
+{% block content %}
+<!-- navbar starts -->
+{% include 'products/navbar.html' %}
+<!-- navbar ends -->
+<div class="container mt-4">
+    {% include '_messages.html' %}
+    <div class="row">
+        <div class="col-md-12">
+            Customer name: {{customer.name}}
+            <br>
+            Customer email: {{customer.email}}
+            <br>
+            Customer contact: {{customer.contact}}
+            <br>
+            <br>
+            <table class="table table-sm">
+                <thead>
+                <th>Sr</th>
+                <th>Invoice</th>
+                <th>Status</th>
+                <th>Date</th>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td>{{loop.index}}</td>
+                        <td>{{order.invoice}}</td>
+                        <td>{{order.status}}</td>
+                        <td>{{order.date_created}}</td>
+                        <form action="{{url_for('orders', invoice=order.invoice)}}" method="post">
+                            <td><button class="btn btn-sm btn-info" type="submit">Go to payment</button></td>
+                        </form>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock content %}

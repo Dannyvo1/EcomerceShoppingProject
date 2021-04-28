@@ -134,10 +134,12 @@ def updatecart(code):
             print(e)
             return redirect(url_for('getCart'))
 #####Decorator pattern
+#subject
 class phone():
     def __init__(self, price, key):
         self.price = price
         self.key = key
+
 class special:
     def __init__(self, phone):
         self.price = phone.price + 200000

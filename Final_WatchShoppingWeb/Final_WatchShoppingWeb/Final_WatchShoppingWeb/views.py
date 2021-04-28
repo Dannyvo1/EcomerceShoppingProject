@@ -37,7 +37,7 @@ def home():
     """Renders the home page."""
     #Pagination
     page = request.args.get('page', 1, type=int)
-    products = addProduct.query.filter(addProduct.stock > 0).paginate(page=page, per_page=1)
+    products = addProduct.query.filter(addProduct.stock > 0).paginate(page=page, per_page=3)
     _brands = getBrands_formenu()
     _categories = getCat_formenu()
     return render_template('products/index.html', products=products,  _brands=_brands, _categories=_categories)

@@ -94,6 +94,7 @@
     <Content Include="Final_WatchShoppingWeb\templates\products\index.html" />
     <Content Include="Final_WatchShoppingWeb\templates\products\layout.html" />
     <Content Include="Final_WatchShoppingWeb\templates\products\navbar.html" />
+    <Content Include="Final_WatchShoppingWeb\templates\customer\pendings.html" />
     <Content Include="Final_WatchShoppingWeb\templates\products\result.html" />
     <Content Include="Final_WatchShoppingWeb\templates\products\single_page.html" />
     <Content Include="Final_WatchShoppingWeb\templates\products\updatebrand.html" />
