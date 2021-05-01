@@ -183,22 +183,22 @@ def send_mail_one(name, recip):
     msg = Message('Hello', sender = 'dannyvo243@gmail.com', recipients = [str(recip)])
     msg.body = """Xin chúc mừng quý khách {} đã trở thành khách hàng thân thiết của H&T Shop.
 
-    Chúng tôi sẽ cập nhật thường xuyên các mẫu đồng hồ cao cấp cho quý khách,
+Chúng tôi sẽ cập nhật thường xuyên các mẫu đồng hồ cao cấp cho quý khách,
 
-    Mang đến sự đẳng cấp cho khách hàng là nghĩa vụ của chúng tôi.
+Mang đến sự đẳng cấp cho khách hàng là nghĩa vụ của chúng tôi.
                     
-    Xin trân trọng cám ơn.""".format(str(name))
+Xin trân trọng cám ơn.""".format(str(name))
     mail.send(msg)
 
 def send_mail_two(name, recip):
     msg = Message('Hello', sender = 'dannyvo243@gmail.com', recipients = [str(recip)])
     msg.body = """Xin chúc mừng quý khách {} đã đặt hàng thành công tại H&T Shop.
 
-    Quý khách sẽ nhận được sản phẩm sau 4 ngày, 
+Quý khách sẽ nhận được sản phẩm sau 4 ngày, 
 
-    Chúc quý khách có một ngày vui vẻ!
+Chúc quý khách có một ngày vui vẻ!
                     
-    Xin trân trọng cám ơn.""".format(str(name))
+Xin trân trọng cám ơn.""".format(str(name))
     mail.send(msg)
 
 
