@@ -122,7 +122,7 @@ def register():
     )
 
 @app.route('/login', methods=['GET', 'POST'])
-def login():inal
+def login():
     form = loginform(request.form)
     if request.method == 'POST' and form.validate():
         ## Check exist username
